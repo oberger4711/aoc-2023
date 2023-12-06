@@ -18,12 +18,10 @@ public:
     size_t prev;
     size_t next;
     T value;
-    template <typename... Args>
+
     Element(size_t prev_, const T &value_)
         : prev(prev_), next(npos), value(value_) {}
   };
-
-  void reserve(size_t size) { data.reserve(size); }
 
   size_t first() const { return head; }
 
