@@ -1,0 +1,10 @@
+LR
+
+UUA = (UUB, XXX)
+UUB = (XXX, UUZ)
+UUZ = (UUB, XXX)
+VVA = (VVB, XXX)
+VVB = (VVC, VVC)
+VVC = (VVZ, VVZ)
+VVZ = (VVB, VVB)
+XXX = (XXX, XXX)
