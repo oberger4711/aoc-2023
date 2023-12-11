@@ -89,11 +89,11 @@ void solveBothParts() {
   while (std::getline(ifs, line)) {
     lines.push_back(line);
   }
-  // These lookup tables map text coordinates -> expanded coordinates.
-  std::vector<num> expansions{2, 1'000'000};
+  const std::vector<num> expansions{2, 1'000'000};
   auto ogCoords = extractGalaxyCoords(lines);
   for (num i : expansions) {
     auto coords = ogCoords;
+    // These lookup tables map text coordinates -> expanded coordinates.
     auto rowMap = buildRowMap(lines, i);
     auto colMap = buildColMap(lines, i);
     expandGalaxyCoords(coords, rowMap, colMap);
