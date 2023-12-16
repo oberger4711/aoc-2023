@@ -1,8 +1,15 @@
 #include <iostream>
+#include <fstream>
+#include <string>
 #include "utils.h"
 
 void solvePart1() {
-  // TODO
+  std::ifstream ifs("input.txt");
+  std::vector<std::string> lines;
+  std::string line;
+  while (std::getline(ifs, line)) {
+    lines.push_back(line);
+  }
 }
 
 void solvePart2() {

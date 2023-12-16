@@ -3,6 +3,41 @@
 #include <iostream>
 #include <vector>
 
+struct Coords {
+  int row, col;
+  Coords(int row_, int col_) : row(row_), col(col_) {}
+  Coords operator+(const Coords &rhs) const {
+    return Coords(row + rhs.row, col + rhs.col);
+  }
+  Coords operator-(const Coords &rhs) const {
+    return Coords(row - rhs.row, col - rhs.col);
+  }
+  Coords &operator+=(const Coords &rhs) {
+    row += rhs.row;
+    col += rhs.col;
+    return *this;
+  }
+  Coords &operator-=(const Coords &rhs) {
+    row -= rhs.row;
+    col -= rhs.col;
+    return *this;
+  }
+  Coords operator*(const int scale) const {
+    return Coords(row * scale, col * scale);
+  }
+  Coords &operator*=(const int scale) {
+    row *= scale;
+    col *= scale;
+    return *this;
+  }
+  int manhattanDistance() const { return std::abs(row) + std::abs(col); }
+
+  static Coords Up() { return Coords(-1, 0); }
+  static Coords Down() { return Coords(1, 0); }
+  static Coords Left() { return Coords(0, -1); }
+  static Coords Right() { return Coords(0, 1); }
+};
+
 inline bool isDigit(char ch) { return 0x30 <= ch && ch < 0x3A; }
 
 template <typename Func>
