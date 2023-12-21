@@ -3,40 +3,57 @@
 #include <iostream>
 #include <vector>
 
-struct Coords {
-  int row, col;
-  Coords(int row_, int col_) : row(row_), col(col_) {}
-  Coords operator+(const Coords &rhs) const {
-    return Coords(row + rhs.row, col + rhs.col);
+// This file is copied into each day.
+// That is redundant but this way I can still run older solutions without having
+// to touch them when I make changes in the utils.h.
+
+// Use this in the solve.cpp:
+// using Coords = Coords_<int>;
+// or whatever type fits the puzzle best.
+template <typename T> struct Coords_ {
+  T row, col;
+  Coords_(T row_, T col_) : row(row_), col(col_) {}
+  Coords_<T> plus(T row_, T col_) { return Coords_<T>(row + row_, col + col_); }
+  void plusEquals(T row_, T col_) {
+    row += row_;
+    col += col_;
   }
-  Coords operator-(const Coords &rhs) const {
-    return Coords(row - rhs.row, col - rhs.col);
+  Coords_<T> operator+(const Coords_<T> &rhs) const {
+    return Coords_<T>(row + rhs.row, col + rhs.col);
   }
-  Coords &operator+=(const Coords &rhs) {
+  Coords_<T> operator-(const Coords_<T> &rhs) const {
+    return Coords_<T>(row - rhs.row, col - rhs.col);
+  }
+  Coords_<T> &operator+=(const Coords_<T> &rhs) {
     row += rhs.row;
     col += rhs.col;
     return *this;
   }
-  Coords &operator-=(const Coords &rhs) {
+  Coords_<T> &operator-=(const Coords_<T> &rhs) {
     row -= rhs.row;
     col -= rhs.col;
     return *this;
   }
-  Coords operator*(const int scale) const {
-    return Coords(row * scale, col * scale);
+  Coords_<T> operator*(const T scale) const {
+    return Coords_<T>(row * scale, col * scale);
   }
-  Coords &operator*=(const int scale) {
+  Coords_<T> &operator*=(const T scale) {
     row *= scale;
     col *= scale;
     return *this;
   }
-  int manhattanDistance() const { return std::abs(row) + std::abs(col); }
+  T manhattanDistance() const { return std::abs(row) + std::abs(col); }
 
-  static Coords Up() { return Coords(-1, 0); }
-  static Coords Down() { return Coords(1, 0); }
-  static Coords Left() { return Coords(0, -1); }
-  static Coords Right() { return Coords(0, 1); }
+  static Coords_<T> Up() { return Coords_<T>(-1, 0); }
+  static Coords_<T> Down() { return Coords_<T>(1, 0); }
+  static Coords_<T> Left() { return Coords_<T>(0, -1); }
+  static Coords_<T> Right() { return Coords_<T>(0, 1); }
 };
+
+template <typename T>
+inline bool operator==(const Coords_<T> &lhs, const Coords_<T> &rhs) {
+  return lhs.row == rhs.row && lhs.col == rhs.col;
+}
 
 inline bool isDigit(char ch) { return 0x30 <= ch && ch < 0x3A; }
 
