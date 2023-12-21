@@ -15,9 +15,9 @@ const Coords RIGHT(Coords::Right());
 const Coords UP(Coords::Up());
 
 // Lookup table to handle direction of part 2 as in part 1.
-std::array<char, 4> hexToCh = {'R', 'D', 'L', 'U'};
+std::array<char, 4> dirHexToCh = {'R', 'D', 'L', 'U'};
 
-const Coords &chToDir(char ch) {
+const Coords &dirChToCoords(char ch) {
   if (ch == 'L') {
     return LEFT;
   } else if (ch == 'D') {
@@ -32,29 +32,12 @@ const Coords &chToDir(char ch) {
 }
 
 // Compute the area of a simple polygon (i.e. non-self-intersecting).
-long long shoeLace(const std::vector<Coords> &corners) {
-  // https://en.wikipedia.org/wiki/Shoelace_formula
-  long long sum = 0;
-  // The formula assumes c_0 == c_n but we don't have such a c_0 in the vector.
-  // Therefore add it explicitly to the sum.
-  const Coords cN = corners.back();
-  const Coords c0 = corners[0];
-  sum += cN.col * c0.row - c0.col * cN.row;
-  for (size_t i = 0; i < corners.size() - 1; ++i) {
-    const auto &cCur = corners[i];
-    const auto &cNext = corners[i + 1];
-    sum += cCur.col * cNext.row - cNext.col * cCur.row;
-  }
-  assert(sum % 2 == 0); // Area must be integer or there is a bug somewhere.
-  return sum / 2;
-}
-
-// Compute the area of a simple polygon (i.e. non-self-intersecting).
 long long shoeLaceIncrement(const Coords &cur, const Coords &next) {
   // https://en.wikipedia.org/wiki/Shoelace_formula
   return cur.col * next.row - next.col * cur.row;
 }
 
+// Call on the sum of shoeLaceIncrement() results to get final area.
 long long shoeLaceArea(long long sum) {
   assert(sum > 0);
   assert(sum % 2 == 0); // Area must be integer or there is a bug somewhere.
@@ -78,7 +61,7 @@ public:
       }
       prevCorner = CoordsPair{curCcwise, curCwise};
     }
-    pos += chToDir(dir) * steps;
+    pos += dirChToCoords(dir) * steps;
     if (firstDir == ' ') {
       firstDir = dir;
     }
@@ -194,7 +177,7 @@ void solvePart2() {
     std::string str;
     iss >> chJunk >> iJunk >> str;
     // Extract dir and steps from hex string.
-    const char dir = hexToCh[str[7] - '0'];
+    const char dir = dirHexToCh[str[7] - '0'];
     const std::string stepsHex = str.substr(2, 5); // Cut off () and #.
     const int steps = std::stoi(stepsHex, nullptr, 16);
     // std::cout << dir << " " << steps << "\n";
